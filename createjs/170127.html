@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>yaaaaa</title>
+</head>
+<body>
+	<h1>createJS</h1>
+	<hr>
+	<canvas id="myCanvas" width="1000" height="400"></canvas>
+	<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+
+	<script>
+		
+		//表示の際に起動する
+		window.addEventListener('load', init ) ;
+		function init (){
+
+			//stageオブジェクトをつくる
+			var stage = new createjs.Stage("myCanvas");
+
+
+			//shapeオブジェクトをつくる
+			var shikaku = new createjs.Shape();
+			var shikaku2 = new createjs.Shape();
+
+			shikaku.graphics.beginFill("#FFADAD");
+			shikaku.graphics.drawRect(200, 100, 100, 100);
+
+			shikaku2.graphics.beginFill("#8DFFEB");
+			shikaku2.graphics.drawRect(290, 100, 100, 100);
+
+
+			//stageにshapeをのせる
+			stage.addChild(shikaku);
+			stage.addChild(shikaku2);
+			//アニメーション
+			var muki = 1;
+			var muki2 = -1;
+			createjs.Ticker.on('tick', function(){
+				shikaku.x += 5 * muki;
+				shikaku2.x += 5 * muki2;
+				if(shikaku.x > 90) muki = -1 ;
+				if(shikaku.x < 0 ) muki = +1 ;
+
+				if(shikaku2.x< -90) muki2 = +1 ;
+				if(shikaku2.x > 0 ) muki2 = -1 ;
+				stage.update();
+			})
+
+
+
+
+		}
+
+	</script>
+
+
+</body>
+</html>
