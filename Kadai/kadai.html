@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title></title>
+</head>
+<body>
+   <h1>テスト</h1>
+   <hr>
+   <canvas id="myCanvas" width="1000" height="300"></canvas>
+   <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+
+  <script>
+   window.addEventListener('load' , init);
+   function init(){
+       var stage = new createjs.Stage('myCanvas');
+
+      var shikaku1 = new createjs.Shape();
+       var shikaku2 = new createjs.Shape();
+       var me = new createjs.Shape();
+
+      var dragPointX;
+       var dragPointY;        
+
+      shikaku1.graphics.beginFill("#FCA8A8  ");
+       shikaku1.graphics.drawRect(0,0,1000,100);
+
+      shikaku2.graphics.beginFill("#FCA8A8  ");
+       shikaku2.graphics.drawRect(0,200,1000,100);
+
+      me.graphics.beginFill("#69FFE5  ");
+       me.graphics.drawCircle(0, 0, 40);
+       me.x = 50;
+       me.y = 150;
+
+      stage.addChild(shikaku1);
+       stage.addChild(shikaku2);
+       stage.addChild(me);
+     me.addEventListener("mousedown", handleDown);
+     me.addEventListener("pressmove", handleMove);
+     me.addEventListener("pressup", handleUp);
+
+    // ボールを押したときの処理です
+     function handleDown(event) {
+       // ドラッグを開始した座標を覚えておく
+       dragPointX = stage.mouseX - me.x;
+       dragPointY = stage.mouseY - me.y;
+
+      // ボールを半透明にする
+       me.alpha = 0.5;
+     }
+
+    // ボールを押した状態で動かしたときの処理です
+     function handleMove(event) {
+       // ボールはマウス座標に追随する
+       // ただしドラッグ開始地点との補正をいれておく
+       me.x = stage.mouseX - dragPointX;
+       me.y = stage.mouseY - dragPointY;
+     }
+
+    // ボールからマウスを離したときの処理です
+     function handleUp(event) {
+       // ボールを元の透明度に戻す
+       me.alpha = 1.0;
+     }
+
+    // 時間経過
+     createjs.Ticker.addEventListener("tick", handleTick);
+     function handleTick() {
+
+      var mexy1 = me.localToLocal(0, 0, shikaku1);
+       var meHit1 = shikaku1.hitTest(mexy1.x ,mexy1.y);
+       var mexy2 = me.localToLocal(0, 0, shikaku2);
+       var meHit2 = shikaku2.hitTest(mexy2.x ,mexy2.y);
+
+      if(meHit1 == true){
+          alert("ゲームオーバー!");
+       createjs.Ticker.removeAllEventListeners();
+       stage.removeAllEventListeners();
+       }
+
+      if(meHit2 == true){
+          alert("ゲームオーバー!");
+       createjs.Ticker.removeAllEventListeners();
+       stage.removeAllEventListeners();
+       }
+
+      if(me.x >=960){
+          alert("ゲームクリア");
+       createjs.Ticker.removeAllEventListeners();
+       stage.removeAllEventListeners();
+       }
+
+      stage.update(); // 画面更新
+     }
+  }
+
+  </script>
+
+</body>
+</html>
